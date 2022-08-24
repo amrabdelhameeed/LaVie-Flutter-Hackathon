@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/model/blog.dart';
-import 'package:la_vie/model/product.dart';
+import 'app_web_services.dart';
+import '../model/blog.dart';
+import '../model/post_model.dart';
+import '../model/product.dart';
 
 class AppRepository {
   final AppWebServices webServices;
@@ -16,5 +16,15 @@ class AppRepository {
   Future<Blogs> getAllBlogs() async {
     final response = await webServices.getAllBlogs();
     return Blogs.fromJson(response.data['data']);
+  }
+
+  Future<PostsResponse> getAllPosts() async {
+    final response = await webServices.getAllPosts();
+    return PostsResponse.fromJson(response.data);
+  }
+
+  Future<PostsResponse> getMyPosts() async {
+    final response = await webServices.getMyPosts();
+    return PostsResponse.fromJson(response.data);
   }
 }

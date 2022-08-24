@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_styles.dart';
+import '../../../core/app_images.dart';
+import '../../../core/app_styles.dart';
+import '../../../model/post_model.dart';
 import 'package:sizer/sizer.dart';
 
 class PostItem extends StatelessWidget {
-  const PostItem({Key? key}) : super(key: key);
+  const PostItem(
+      {Key? key, required this.post, required this.like, required this.comment})
+      : super(key: key);
+  final Post post;
+  final VoidCallback like;
+  final VoidCallback comment;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +27,8 @@ class PostItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(AppImages.google),
+              const CircleAvatar(
+                backgroundImage: const AssetImage(AppImages.google),
               ),
               _spaceHorizontal(2),
               Column(
@@ -30,26 +36,26 @@ class PostItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Amr Abd Elhamid',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    post.user!.firstName! + post.user!.lastName!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text('4 hours ago',
+                  const Text('4 hours ago',
                       style: TextStyle(color: Colors.grey, fontSize: 12)),
                 ],
               )
             ],
           ),
           _space(2),
-          Text('How To treat plants',
-              style: TextStyle(
+          Text(post.title!,
+              style: const TextStyle(
                   height: 1.3,
                   color: Colors.green,
                   fontSize: 20,
                   fontWeight: FontWeight.bold)),
           _space(1),
-          Text('it beloajsndkjlasnbdlkasnmd;lasndlkasndlknasd aksdnlkasnd',
+          Text(post.description!,
               maxLines: 3,
-              style: TextStyle(
+              style: const TextStyle(
                 height: 1.3,
                 color: Colors.grey,
                 fontSize: 15,
@@ -60,31 +66,66 @@ class PostItem extends StatelessWidget {
             height: 15.h,
             decoration: BoxDecoration(
                 color: Colors.amber,
-                image: DecorationImage(image: AssetImage(AppImages.facebook))),
+                image: DecorationImage(image: NetworkImage(post.imageUrl!))),
           ),
           _space(2),
           Container(
             width: 45.w,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [_likeOrComment(true, 0), _likeOrComment(false, 2)],
+              children: [
+                _likeOrComment(true, post.forumLikes!, like),
+                _likeOrComment(
+                  false,
+                  post.forumComments!.length,
+                  comment,
+                )
+              ],
             ),
-          )
+          ),
+          post.forumComments != null && post.forumComments!.isNotEmpty
+              ? _comment()
+              : const SizedBox.shrink(),
         ],
       ),
     );
   }
+
+  Container _comment() {
+    return Container(
+        width: 100.w,
+        height: 8.h,
+        padding: EdgeInsets.only(top: 1.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(post.forumComments!.first.comment ?? ''),
+            Text(
+              post.forumComments!.first.createdAt!.substring(0, 15),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.grey),
+            )
+          ],
+        ));
+  }
 }
 
-Widget _likeOrComment(bool isLike, int num) {
+Widget _likeOrComment(bool isLike, int num, VoidCallback likeOrComment) {
   return GestureDetector(
-    onTap: () {
+    onTap: () async {
       if (isLike) {
-      } else {}
+        likeOrComment();
+      } else {
+        likeOrComment();
+      }
     },
     child: Row(
       children: [
-        isLike ? Icon(Icons.thumb_up_alt_outlined) : SizedBox.shrink(),
+        isLike
+            ? const Icon(Icons.thumb_up_alt_outlined)
+            : const SizedBox.shrink(),
         _spaceHorizontal(1),
         Text(num.toString()),
         _spaceHorizontal(1),

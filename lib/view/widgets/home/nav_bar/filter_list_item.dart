@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_colors.dart';
-import 'package:la_vie/model/filter_model.dart';
+import '../../../../core/app_colors.dart';
+import '../../../../model/filter_model.dart';
 import 'package:sizer/sizer.dart';
 
 class FilterListItem extends StatelessWidget {

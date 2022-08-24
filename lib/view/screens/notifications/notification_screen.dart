@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:la_vie/core/app_images.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../core/app_images.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class NotificationScreen extends StatelessWidget {
           },
           separatorBuilder: (context, index) {
             return SizedBox(
-              height: 2.h,
+              height: 1.5.h,
             );
           },
         ),
@@ -41,31 +42,42 @@ class NotificationScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 8.h,
+          height: 7.h,
           width: 100.w,
-          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(2),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(AppImages.google),
+              Expanded(
+                flex: 1,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(AppImages.google),
+                ),
               ),
               SizedBox(
                 width: 20,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Joe Amold Left 6 Comments on Your Post',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Text(
-                    'Yetsertday at 11:42 pm',
-                    style: TextStyle(
-                        color: Colors.grey, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              Expanded(
+                flex: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Joe Amold Left 6 Comments on Your Post',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    // Spacer(),
+                    Text(
+                      'Yetsertday at 11:42 pm',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

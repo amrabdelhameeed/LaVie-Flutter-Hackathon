@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_repository.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/model/blog.dart';
+import '../../core/app_repository.dart';
+import '../../core/app_web_services.dart';
+import '../../model/blog.dart';
 part 'blogs_state.dart';
 
 class BlogCubit extends Cubit<BlogState> {

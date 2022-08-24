@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_colors.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_repository.dart';
-import 'package:la_vie/core/app_routes.dart';
-import 'package:la_vie/core/app_strings.dart';
-import 'package:la_vie/core/app_styles.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/core/widgets/custom-elevated_button.dart';
-import 'package:la_vie/model/blog.dart';
-import 'package:la_vie/view_model/blogs_cubit/blogs_cubit.dart';
+import 'package:la_vie/core/widgets/api_strings.dart';
+import '../../../core/app_colors.dart';
+import '../../../core/app_images.dart';
+import '../../../core/app_repository.dart';
+import '../../../core/app_routes.dart';
+import '../../../core/app_strings.dart';
+import '../../../core/app_styles.dart';
+import '../../../core/app_web_services.dart';
+import '../../../core/widgets/custom-elevated_button.dart';
+import '../../../model/blog.dart';
+import '../../../view_model/blogs_cubit/blogs_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 class BlogsScreen extends StatelessWidget {
@@ -69,8 +70,8 @@ class BlogItem extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, AppRoutes.blog, arguments: blog);
       },
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Container(
@@ -94,16 +95,21 @@ class BlogItem extends StatelessWidget {
                       margin: EdgeInsets.all(2.h),
                       decoration: BoxDecoration(
                         color: Colors.amber,
-                        borderRadius: AppStyles.borderRadiusBig,
                       ),
                       child: blog.imageUrl != ApiStrings.baseUrlForImage
-                          ? FadeInImage(
-                              fit: BoxFit.cover,
-                              placeholder: const AssetImage(AppImages.logo),
-                              image: NetworkImage(blog.imageUrl))
-                          : FadeInImage(
-                              placeholder: AssetImage(AppImages.logo),
-                              image: AssetImage(AppImages.logo)),
+                          ? Hero(
+                              tag: blog.imageUrl + blog.description + blog.name,
+                              child: FadeInImage(
+                                  fit: BoxFit.cover,
+                                  placeholder: const AssetImage(AppImages.logo),
+                                  image: NetworkImage(blog.imageUrl)),
+                            )
+                          : Hero(
+                              tag: blog.imageUrl + blog.description + blog.name,
+                              child: FadeInImage(
+                                  placeholder: AssetImage(AppImages.logo),
+                                  image: AssetImage(AppImages.logo)),
+                            ),
                     ),
                   ),
                   Expanded(
@@ -126,14 +132,15 @@ class BlogItem extends StatelessWidget {
                           Text(
                             blog.name,
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
                           ),
                           Text(
                             blog.description,
-                            maxLines: 2,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 18, color: Colors.grey, height: 1.6),
                           )

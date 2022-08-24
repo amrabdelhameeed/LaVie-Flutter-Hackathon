@@ -1,12 +1,12 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/app_router.dart';
-import 'package:la_vie/core/app_routes.dart';
-import 'package:la_vie/core/app_strings.dart';
-import 'package:la_vie/core/cashe_helper.dart';
-import 'package:la_vie/core/dio_helper.dart';
-import 'package:la_vie/core/observer.dart';
+import 'app_router.dart';
+import 'core/app_routes.dart';
+import 'core/app_strings.dart';
+import 'core/cashe_helper.dart';
+import 'core/dio_helper.dart';
+import 'core/observer.dart';
 import 'package:sizer/sizer.dart';
 
 String intialRoute = AppRoutes.auth;
@@ -16,7 +16,9 @@ void main() async {
   await DioHelper.init();
   await CasheHelper.initCasheHelper();
   AppStrings.token = CasheHelper.getStr(key: AppStrings.tokenKey);
-  print(AppStrings.token);
+  AppStrings.searchList = CasheHelper.getList(key: AppStrings.searchListKey);
+
+  debugPrint(AppStrings.token);
   if (AppStrings.token!.isNotEmpty) {
     intialRoute = AppRoutes.home;
   }
@@ -24,6 +26,7 @@ void main() async {
       // DevicePreview(
       //   builder: (context) {
       //     return ;
+
       //   },
       // ),
       MyApp(
@@ -43,7 +46,6 @@ class MyApp extends StatelessWidget {
         // builder: DevicePreview.appBuilder,
         // locale: DevicePreview.locale(context),
         title: 'La Vie',
-        // home: Testaya(),
         initialRoute: intialRoute,
         theme: ThemeData(primarySwatch: Colors.green),
         onGenerateRoute: appRouter.onGenerateRoute,

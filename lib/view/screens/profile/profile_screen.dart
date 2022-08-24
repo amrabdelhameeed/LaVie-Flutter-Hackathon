@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_styles.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/model/user.dart';
-import 'package:la_vie/view_model/profile_cubit/profile_cubit.dart';
+import '../../../core/app_routes.dart';
+import '../../../core/app_strings.dart';
+import '../../../core/app_styles.dart';
+import '../../../core/app_web_services.dart';
+import '../../../core/cashe_helper.dart';
+import '../../../model/user.dart';
+import '../../../view_model/profile_cubit/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 ProfileCubit profileCubit = ProfileCubit(webServices: AppWebServices());
@@ -26,43 +26,11 @@ class ProfileScreen extends StatelessWidget {
               ? Scaffold(
                   body: Stack(
                   children: [
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40.h,
-                        width: 100.h,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                                maxRadius: 80,
-                                backgroundImage:
-                                    NetworkImage(currentUser.imageUrl)),
-                            // _space(2),
-                            Text(
-                              currentUser.firstName + currentUser.lastName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(currentUser.imageUrl),
-                              opacity: 0.2),
-                        ),
-                      ),
-                    ),
+                    _image(currentUser),
                     Positioned(
                         bottom: 0,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           width: 100.w,
                           height: 55.h,
                           decoration: BoxDecoration(
@@ -72,15 +40,15 @@ class ProfileScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.all(3),
+                                margin: const EdgeInsets.all(3),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 15),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
                                       height: 10.h,
                                       width: 100.w,
                                       decoration: BoxDecoration(
@@ -89,8 +57,8 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.stars_rounded),
-                                          SizedBox(
+                                          const Icon(Icons.stars_rounded),
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Text(
@@ -98,8 +66,8 @@ class ProfileScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Text('Edit Profile',
-                                        style: TextStyle(
+                                    const Text('Edit Profile',
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20)),
                                     _space(3),
@@ -109,11 +77,12 @@ class ProfileScreen extends StatelessWidget {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
-                                            print(currentUser.email);
+                                            debugPrint(currentUser.email);
                                             TextEditingController controller =
                                                 TextEditingController(
                                                     text: currentUser
                                                             .firstName +
+                                                        '  ' +
                                                         currentUser.lastName);
                                             return _alertDialog(
                                                 controller,
@@ -121,15 +90,14 @@ class ProfileScreen extends StatelessWidget {
                                                 currentUser,
                                                 'update name', () {
                                               var name =
-                                                  controller.text.split('');
-                                              print(name);
-                                              var firstName = name.first;
-                                              String lastName = name
-                                                  .getRange(firstName.length,
-                                                      controller.text.length)
-                                                  .join()
-                                                  .toString();
-                                              print(lastName);
+                                                  controller.text.split(' ');
+                                              debugPrint(name.toString());
+                                              var firstName = name.removeAt(
+                                                  0); // the substring before space in controller
+                                              String lastName = name.join(
+                                                  ''); // rest of the string after space in controller
+
+                                              debugPrint(lastName);
                                               cubit
                                                   .updateProfileData(
                                                       currentUser: currentUser,
@@ -149,7 +117,6 @@ class ProfileScreen extends StatelessWidget {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
-                                            print(currentUser.email);
                                             TextEditingController controller =
                                                 TextEditingController(
                                                     text: currentUser.email);
@@ -175,13 +142,81 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ))
+                        )),
+                    Positioned(
+                        right: 0,
+                        top: 20,
+                        child: Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  AppStrings.token = '';
+                                  CasheHelper.clearCashe(
+                                      key: AppStrings.tokenKey);
+                                  CasheHelper.clearCashe(
+                                      key: AppStrings.searchListKey);
+
+                                  Navigator.pushReplacementNamed(
+                                      context, AppRoutes.auth);
+                                },
+                                icon: const Icon(
+                                  Icons.exit_to_app,
+                                  color: Colors.white,
+                                )),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.posts,
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.message_rounded,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        )),
                   ],
                 ))
-              : Center(
+              : const Center(
                   child: CircularProgressIndicator(),
                 );
         },
+      ),
+    );
+  }
+
+  Positioned _image(User currentUser) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: 40.h,
+        width: 100.h,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(currentUser.imageUrl),
+              opacity: 0.2),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+                maxRadius: 80,
+                backgroundImage: NetworkImage(currentUser.imageUrl)),
+            // _space(2),
+            Text(
+              currentUser.firstName + ' ' + currentUser.lastName,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.white),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -193,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
     String description,
     VoidCallback onTap,
   ) {
-    print(controller.text);
+    debugPrint(controller.text);
     return AlertDialog(
       actions: [TextButton(onPressed: onTap, child: const Text('update'))],
       content: TextFormField(
@@ -210,8 +245,8 @@ class ProfileScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 15),
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        margin: const EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         height: 10.h,
         width: 100.w,
         decoration: BoxDecoration(
@@ -219,13 +254,13 @@ class ProfileScreen extends StatelessWidget {
             border: Border.all(width: 1, color: Colors.grey.shade500)),
         child: Row(
           children: [
-            Icon(Icons.add_road_rounded),
-            SizedBox(
+            const Icon(Icons.add_road_rounded),
+            const SizedBox(
               width: 10,
             ),
             Text(title),
-            Spacer(),
-            Icon(Icons.arrow_right_alt_sharp)
+            const Spacer(),
+            const Icon(Icons.arrow_right_alt_sharp)
           ],
         ),
       ),

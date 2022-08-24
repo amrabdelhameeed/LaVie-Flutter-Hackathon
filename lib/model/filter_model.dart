@@ -19,4 +19,10 @@ class FilterModel {
     FilterModel(filterName: 'seed'),
     FilterModel(filterName: 'tool'),
   ];
+  static List<FilterModel> Postsfilters = [
+    FilterModel(filterName: 'all', isSelected: true),
+    FilterModel(
+      filterName: 'me',
+    ),
+  ];
 }

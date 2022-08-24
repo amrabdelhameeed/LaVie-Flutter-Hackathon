@@ -40,7 +40,19 @@ class CasheHelper {
     return sharedPreferences!.getString(key) ?? '';
   }
 
-  static void clearCashe() async {
-    await sharedPreferences!.clear();
+  static List<String> getList({
+    required String key,
+  }) {
+    return sharedPreferences!.getStringList(key) ??
+        ['axe', 'rose', 'flower']; // List<String>.empty()
+  }
+
+  static Future<bool> setList(
+      {required List<String> value, required String key}) async {
+    return sharedPreferences!.setStringList(key, value);
+  }
+
+  static void clearCashe({required String key}) async {
+    await sharedPreferences!.remove(key);
   }
 }

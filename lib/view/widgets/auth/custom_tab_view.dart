@@ -1,11 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_colors.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_routes.dart';
-import 'package:la_vie/core/app_strings.dart';
-import 'package:la_vie/view/screens/home/home_layout.dart';
-import 'package:la_vie/view_model/auth_cubit/auth_cubit.dart';
+import '../../../core/app_colors.dart';
+import '../../../core/app_images.dart';
+import '../../../core/app_routes.dart';
+import '../../../core/app_strings.dart';
+import '../../../view_model/auth_cubit/auth_cubit.dart';
 
 import '../../../core/widgets/custom-elevated_button.dart';
 import '../../../core/widgets/custom_text_form_field.dart';
@@ -22,7 +23,6 @@ class RegisterOrLoginView extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    print(AppStrings.token);
     return SingleChildScrollView(
       child: Form(
         key: formKey,
@@ -43,7 +43,9 @@ class RegisterOrLoginView extends StatelessWidget {
                       confirmPasswordCont: confirmPasswordController,
                       emailCont: emailController,
                       passwordCont: passwordController),
-                  isRegister ? const SizedBox.shrink() : _foregetPassword(),
+                  isRegister
+                      ? const SizedBox.shrink()
+                      : _foregetPassword(context),
                   _continueWithGoogleOrFacebook()
                 ],
               ),
@@ -157,12 +159,15 @@ class RegisterOrLoginView extends StatelessWidget {
     );
   }
 
-  Container _foregetPassword() {
+  Container _foregetPassword(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       height: 5.h,
-      child:
-          TextButton(onPressed: () {}, child: const Text('Foreget Password ?')),
+      child: TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.forgetPassword);
+          },
+          child: const Text('Foreget Password ?')),
     );
   }
 
@@ -204,7 +209,7 @@ class RegisterOrLoginView extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    cubit.googleSignIn();
+                    // cubit.googleSignIn();
                   },
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,

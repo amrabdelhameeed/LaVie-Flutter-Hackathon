@@ -12,4 +12,9 @@ class SearchCubit extends Cubit<SearchState> {
     this.isSearching = isSearching;
     emit(SearchToggling());
   }
+
+  void deleteSearchItem({required List<String> list, required int index}) {
+    list.removeAt(index);
+    emit(SearchDeleteHistory());
+  }
 }

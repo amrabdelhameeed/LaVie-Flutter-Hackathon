@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:la_vie/core/app_strings.dart';
+import 'package:la_vie/core/widgets/api_strings.dart';
+import 'app_strings.dart';
 
 class DioHelper {
   static Dio? dio;
@@ -8,8 +9,9 @@ class DioHelper {
         receiveDataWhenStatusError: true,
         baseUrl: ApiStrings.baseUrl,
         headers: {
-          'Content-Type': 'application/json'
-              'accept: application/json'
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          "Access-Control_Allow_Origin": "*",
         }));
   }
 
@@ -20,7 +22,7 @@ class DioHelper {
   }) async {
     dio!.options.headers = {
       'Authorization':
-          AppStrings.token != null ? 'Bearer  $AppStrings.token' : '',
+          AppStrings.token!.isNotEmpty ? 'Bearer ${AppStrings.token}' : '',
     };
     return dio!.post(url, queryParameters: query, data: data);
   }

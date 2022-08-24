@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_numbers.dart';
+import '../app_numbers.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout(

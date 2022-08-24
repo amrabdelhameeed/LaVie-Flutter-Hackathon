@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/widgets/custom-elevated_button.dart';
-import 'package:la_vie/model/product.dart';
+import '../../../core/app_images.dart';
+import '../../../core/widgets/custom-elevated_button.dart';
+import '../../../model/detailed_product.dart';
+import '../../../model/product.dart';
 import 'package:sizer/sizer.dart';
 
 class ProductDetails extends StatelessWidget {
   const ProductDetails({Key? key, required this.product}) : super(key: key);
-  final Product product;
+  final DetailedProduct product;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,12 +29,7 @@ class ProductDetails extends StatelessWidget {
   Container _image() {
     return Container(
       color: Colors.amber,
-      child: Image.asset(
-        product.imageUrl,
-        width: 100.w,
-        height: 50.h,
-        // fit: BoxFit.fill,
-      ),
+      child: Text(product.description),
     );
   }
 
@@ -59,13 +55,9 @@ class ProductDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _titleWithDescription(
-                  title: 'Snake Plant (SANSEVIEREA)',
-                  desription:
-                      'Plant Snake Plant Snake Plant Plant  Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant'),
+                  title: product.name, desription: product.description),
               _titleWithDescription(
-                  title: 'Common Snake Plant Diseases',
-                  desription:
-                      'Snake Plant  Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant Snake Plant '),
+                  title: product.name, desription: product.description),
               // const Spacer(),
             ],
           ),
@@ -102,17 +94,19 @@ class ProductDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _IconWithDetails(
-              iconData: Icons.sunny, description: 'sun light', precent: '78'),
+              iconData: Icons.sunny,
+              description: 'sun light',
+              precent: product.sunLight.toString()),
           _space(),
           _IconWithDetails(
               iconData: Icons.water_drop_rounded,
               description: 'water capicty',
-              precent: '10'),
+              precent: product.waterCapacity.toString()),
           _space(),
           _IconWithDetails(
               iconData: Icons.device_thermostat_sharp,
               description: 'tempreture',
-              precent: '29'),
+              precent: product.temperature.toString()),
         ],
       ),
     );

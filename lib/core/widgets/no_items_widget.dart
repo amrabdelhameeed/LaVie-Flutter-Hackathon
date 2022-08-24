@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_images.dart';
 import 'package:sizer/sizer.dart';
+
+import '../app_images.dart';
 
 class NoItems extends StatelessWidget {
   const NoItems({Key? key, required this.noItemsMessage}) : super(key: key);

@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_styles.dart';
-import 'package:la_vie/core/widgets/custom-elevated_button.dart';
-import 'package:la_vie/core/widgets/custom_text_form_field.dart';
-import 'package:la_vie/view_model/posts_cubit/posts_cubit.dart';
+import '../../../core/app_styles.dart';
+import '../../../core/widgets/custom-elevated_button.dart';
+import '../../../core/widgets/custom_text_form_field.dart';
+import '../../../view_model/posts_cubit/posts_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 class CreatePostScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class CreatePostScreen extends StatelessWidget {
             backgroundColor: Colors.white,
             elevation: 0.0,
             centerTitle: true,
-            title: Text(
+            title: const Text(
               'Create New Post',
               style: TextStyle(color: Colors.black),
             ),

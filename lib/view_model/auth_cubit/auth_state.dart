@@ -22,3 +22,9 @@ class AuthError extends AuthState {
 
   AuthError({required this.error});
 }
+
+class OTPSentSuccess extends AuthState {}
+
+class VerifyOtpSuccess extends AuthState {}
+
+class ResetPasswordSuccess extends AuthState {}

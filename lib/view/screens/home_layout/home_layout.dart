@@ -1,18 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/model/product.dart';
-import 'package:la_vie/view/widgets/home/nav_bar/products_item.dart';
-import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
-import 'package:la_vie/view_model/home_nav_bar_cubit/home_nav_bar_cubit.dart';
+import 'package:flutter_offline/flutter_offline.dart';
+import '../../../core/app_images.dart';
+import '../../../view_model/home_nav_bar_cubit/home_nav_bar_cubit.dart';
 
 class HomeLayout extends StatelessWidget {
   const HomeLayout({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeNavBarCubit, HomeNavBarState>(
+    return OfflineBuilder(connectivityBuilder: (
+      BuildContext context,
+      ConnectivityResult connectivity,
+      Widget child,
+    ) {
+      final bool connected = connectivity != ConnectivityResult.none;
+      return new Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            height: 24.0,
+            left: 0.0,
+            right: 0.0,
+            child: Container(
+              color: connected ? Color(0xFF00EE44) : Color(0xFFEE4400),
+              child: Center(
+                child: Text("${connected ? 'ONLINE' : 'OFFLINE'}"),
+              ),
+            ),
+          ),
+          Center(
+            child: new Text(
+              'Yay!',
+            ),
+          ),
+        ],
+      );
+    }, child: BlocBuilder<HomeNavBarCubit, HomeNavBarState>(
       builder: (context, state) {
         var cubit = HomeNavBarCubit.get(context);
+
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -60,6 +86,6 @@ class HomeLayout extends StatelessWidget {
           body: cubit.navBarScreens[cubit.currentIndex],
         );
       },
-    );
+    ));
   }
 }

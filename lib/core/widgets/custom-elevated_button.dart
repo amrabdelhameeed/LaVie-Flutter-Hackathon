@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_colors.dart';
+import '../app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class CustomElevatedButton extends StatelessWidget {

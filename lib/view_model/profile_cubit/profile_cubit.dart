@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/model/user.dart';
+import '../../core/app_web_services.dart';
+import '../../model/user.dart';
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

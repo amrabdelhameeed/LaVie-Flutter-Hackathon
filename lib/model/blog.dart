@@ -1,4 +1,6 @@
-import 'package:la_vie/core/app_strings.dart';
+import 'package:la_vie/core/widgets/api_strings.dart';
+
+import '../core/app_strings.dart';
 
 class Blogs {
   late List<Blog> blogs;

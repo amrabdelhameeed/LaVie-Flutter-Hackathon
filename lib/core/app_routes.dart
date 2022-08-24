@@ -13,4 +13,7 @@ class AppRoutes {
   static const notification = '/notification';
   static const blogs = '/blogs';
   static const blog = '/blog';
+  static const forgetPassword = '/forgetPassword';
+  static const verifyOtp = '/verifyOtp';
+  static const resetPassword = '/resetPassword';
 }

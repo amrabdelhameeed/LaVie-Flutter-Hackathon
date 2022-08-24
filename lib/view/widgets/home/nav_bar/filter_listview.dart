@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/model/filter_model.dart';
-import 'package:la_vie/view/widgets/home/nav_bar/filter_list_item.dart';
-import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../../model/filter_model.dart';
+import '../../../../view_model/home_cubit/home_cubit.dart';
+import 'filter_list_item.dart';
 
 class FilterListView extends StatelessWidget {
   const FilterListView({

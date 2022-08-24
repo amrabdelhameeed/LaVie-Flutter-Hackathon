@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_vie/core/app_strings.dart';
 import 'package:la_vie/core/app_styles.dart';
-import 'package:la_vie/model/product.dart';
-import 'package:la_vie/view/screens/home/nav_bar/home.dart';
+import 'package:la_vie/core/cashe_helper.dart';
 import 'package:la_vie/core/widgets/no_items_widget.dart';
+import 'package:la_vie/model/product.dart';
+import 'package:la_vie/view/screens/home/home.dart';
 import 'package:la_vie/view/widgets/home/nav_bar/products_item.dart';
 import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
 import 'package:la_vie/view_model/search_cubit/search_cubit.dart';
@@ -41,9 +43,9 @@ class SearchScreen extends StatelessWidget {
                                   _recentSearch(),
                                   ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: 3,
+                                    itemCount: AppStrings.searchList!.length,
                                     itemBuilder: (context, index) {
-                                      return _historyItem();
+                                      return _historyItem(index, searchCubit);
                                     },
                                   )
                                 ],
@@ -64,7 +66,8 @@ class SearchScreen extends StatelessWidget {
                                                 textEditingController.text))
                                         .toList(),
                                     homeCubit)
-                                : NoItems(noItemsMessage: 'enter a valid name'))
+                                : const NoItems(
+                                    noItemsMessage: 'enter a valid name'))
                       ],
                     ),
                   ),
@@ -77,7 +80,7 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Padding _historyItem() {
+  Padding _historyItem(int index, SearchCubit cubit) {
     return Padding(
       padding: EdgeInsets.only(left: 3.w),
       child: Row(
@@ -87,14 +90,20 @@ class SearchScreen extends StatelessWidget {
             children: [
               const Icon(Icons.history_toggle_off_sharp, color: Colors.grey),
               _verticalSpace(),
-              const Text(
-                'gradinat plant',
+              Text(
+                AppStrings.searchList![index],
                 style: const TextStyle(color: Colors.grey),
               )
             ],
           ),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                cubit.deleteSearchItem(
+                    list: AppStrings.searchList!, index: index);
+                CasheHelper.setList(
+                    value: AppStrings.searchList!,
+                    key: AppStrings.searchListKey);
+              },
               icon: const Icon(Icons.delete, color: Colors.grey))
         ],
       ),
@@ -127,6 +136,9 @@ class SearchScreen extends StatelessWidget {
         textFormField: TextFormField(
       onFieldSubmitted: (value) {
         cubit.toggleSearch(false);
+        AppStrings.searchList!.add(value);
+        CasheHelper.setList(
+            value: AppStrings.searchList!, key: AppStrings.searchListKey);
       },
       onTap: () {
         cubit.toggleSearch(true);

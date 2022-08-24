@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:la_vie/core/app_strings.dart';
+import 'package:la_vie/core/widgets/api_strings.dart';
+import '../core/app_strings.dart';
 
 // ignore: must_be_immutable
 class Product extends Equatable {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_colors.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/widgets/custom-elevated_button.dart';
-import 'package:la_vie/model/product.dart';
-import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
+import '../../../../core/app_colors.dart';
+import '../../../../core/app_images.dart';
+import '../../../../core/widgets/custom-elevated_button.dart';
+import '../../../../model/product.dart';
+import '../../../../view_model/home_cubit/home_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 class ProductItem extends StatelessWidget {

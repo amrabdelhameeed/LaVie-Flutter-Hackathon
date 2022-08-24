@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_images.dart';
 import 'package:sizer/sizer.dart';
+
+import '../app_images.dart';
+import '../app_routes.dart';
 
 class AppBarWithLogo extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWithLogo(

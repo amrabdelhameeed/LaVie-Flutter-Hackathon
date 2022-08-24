@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/widgets/appbar_with_logo.dart';
-import 'package:la_vie/view/widgets/auth/custom_tab_view.dart';
+import '../../../core/app_images.dart';
+import '../../../core/widgets/appbar_with_logo.dart';
+import '../../widgets/auth/custom_tab_view.dart';
 import 'package:sizer/sizer.dart';
 
 class AuthScreen extends StatelessWidget {

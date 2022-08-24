@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_colors.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_routes.dart';
-import 'package:la_vie/core/app_styles.dart';
-import 'package:la_vie/core/widgets/appbar_with_logo.dart';
-import 'package:la_vie/model/filter_model.dart';
-import 'package:la_vie/model/product.dart';
-import 'package:la_vie/view/widgets/home/nav_bar/filter_listview.dart';
-import 'package:la_vie/view/widgets/home/nav_bar/products_item.dart';
-import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
+import '../../../core/app_images.dart';
+import '../../../core/app_routes.dart';
+import '../../../core/app_styles.dart';
+import '../../../core/widgets/appbar_with_logo.dart';
+import '../../../model/filter_model.dart';
+import '../../../model/product.dart';
+import '../../widgets/home/nav_bar/filter_listview.dart';
+import '../../widgets/home/nav_bar/products_item.dart';
+import '../../../view_model/home_cubit/home_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 class Home extends StatelessWidget {

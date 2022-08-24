@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_vie/core/app_images.dart';
-import 'package:la_vie/core/app_repository.dart';
-import 'package:la_vie/core/app_routes.dart';
-import 'package:la_vie/core/app_web_services.dart';
-import 'package:la_vie/model/blog.dart';
-import 'package:la_vie/model/product.dart';
-import 'package:la_vie/view/screens/auth/auth_screen.dart';
-import 'package:la_vie/view/screens/blogs/blog_screen.dart';
-import 'package:la_vie/view/screens/blogs/blogs_screen.dart';
-import 'package:la_vie/view/screens/cart/cart_screen.dart';
-import 'package:la_vie/view/screens/home/home_layout.dart';
-import 'package:la_vie/view/screens/notifications/notification_screen.dart';
-import 'package:la_vie/view/screens/posts/create_post_screen.dart';
-import 'package:la_vie/view/screens/posts/posts_screen.dart';
-import 'package:la_vie/view/screens/product/product_deatils.dart';
-import 'package:la_vie/view/screens/profile/profile_screen.dart';
-import 'package:la_vie/view/screens/search/search_screen.dart';
-import 'package:la_vie/view_model/auth_cubit/auth_cubit.dart';
-import 'package:la_vie/view_model/cart_cubit/cart_cubit.dart';
-import 'package:la_vie/view_model/home_cubit/home_cubit.dart';
-import 'package:la_vie/view_model/home_nav_bar_cubit/home_nav_bar_cubit.dart';
-import 'package:la_vie/view_model/posts_cubit/posts_cubit.dart';
-import 'package:la_vie/view_model/search_cubit/search_cubit.dart';
+import 'package:la_vie/view/screens/home_layout/home_layout.dart';
+
+import 'core/app_repository.dart';
+import 'core/app_routes.dart';
+import 'core/app_web_services.dart';
+import 'model/blog.dart';
+import 'model/detailed_product.dart';
+import 'view/screens/auth/auth_screen.dart';
+import 'view/screens/auth/forget_password.dart';
+import 'view/screens/auth/otp_screen.dart';
+import 'view/screens/auth/reset_password_screen.dart';
+import 'view/screens/blogs/blog_screen.dart';
+import 'view/screens/cart/cart_screen.dart';
+import 'view/screens/notifications/notification_screen.dart';
+import 'view/screens/posts/create_post_screen.dart';
+import 'view/screens/posts/posts_screen.dart';
+import 'view/screens/product/product_deatils.dart';
+import 'view/screens/search/search_screen.dart';
+import 'view_model/auth_cubit/auth_cubit.dart';
+import 'view_model/home_cubit/home_cubit.dart';
+import 'view_model/home_nav_bar_cubit/home_nav_bar_cubit.dart';
+import 'view_model/posts_cubit/posts_cubit.dart';
+import 'view_model/search_cubit/search_cubit.dart';
 
 class AppRouter {
   late AppWebServices webServices;
   late HomeCubit homeCubit;
   late AppRepository repository;
+  late PostsCubit postscubit;
 
   AppRouter() {
     webServices = AppWebServices();
     repository = AppRepository(webServices);
-    homeCubit = HomeCubit(webServices: webServices, appRepository: repository);
+    homeCubit = HomeCubit(appRepository: repository);
+    postscubit = PostsCubit(webServices: webServices, repository: repository);
   }
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -41,7 +43,7 @@ class AppRouter {
           builder: (context) {
             return BlocProvider<AuthCubit>(
               create: (context) => AuthCubit(webServices: webServices),
-              child: AuthScreen(),
+              child: const AuthScreen(),
             );
           },
         );
@@ -52,7 +54,7 @@ class AppRouter {
               create: (context) => HomeNavBarCubit(),
               child: BlocProvider<HomeCubit>.value(
                 value: homeCubit..getProducts(),
-                child: HomeLayout(),
+                child: const HomeLayout(),
               ),
             );
           },
@@ -69,19 +71,15 @@ class AppRouter {
             );
           },
         );
+
+      //this screen ready to work but i dont have a qr code to test with
       case AppRoutes.productDetails:
         return MaterialPageRoute(
           builder: (context) {
+            final detaildProduct = settings.arguments as DetailedProduct;
             return BlocProvider<HomeCubit>.value(
               value: homeCubit,
-              child: ProductDetails(
-                  product: Product(
-                      type: '',
-                      description: '',
-                      id: '5',
-                      name: 'name',
-                      price: 250,
-                      imageUrl: AppImages.facebook)),
+              child: ProductDetails(product: detaildProduct),
             );
           },
         );
@@ -90,15 +88,15 @@ class AppRouter {
           builder: (context) {
             return BlocProvider<HomeCubit>.value(
               value: homeCubit,
-              child: CartScreen(),
+              child: const CartScreen(),
             );
           },
         );
       case AppRoutes.createPost:
         return MaterialPageRoute(
           builder: (context) {
-            return BlocProvider<PostsCubit>(
-              create: (context) => PostsCubit(webServices: webServices),
+            return BlocProvider<PostsCubit>.value(
+              value: postscubit,
               child: CreatePostScreen(),
             );
           },
@@ -106,27 +104,49 @@ class AppRouter {
       case AppRoutes.posts:
         return MaterialPageRoute(
           builder: (context) {
-            return PostsScreen();
+            return BlocProvider<PostsCubit>.value(
+              value: postscubit..getAllPosts(),
+              child: const PostsScreen(),
+            );
           },
         );
-      // case AppRoutes.profile:
-      //   return MaterialPageRoute(
-      //     builder: (context) {
-      //       return ProfileScreen();
-      //     },
-      //   );
+      case AppRoutes.forgetPassword:
+        return MaterialPageRoute(
+          builder: (context) {
+            return BlocProvider<AuthCubit>(
+              create: (context) => AuthCubit(webServices: webServices),
+              child: ForgetPasswordScreen(),
+            );
+          },
+        );
+      case AppRoutes.verifyOtp:
+        return MaterialPageRoute(
+          builder: (context) {
+            final email = settings.arguments as String;
+            return BlocProvider<AuthCubit>(
+              create: (context) => AuthCubit(webServices: webServices),
+              child: OtpScreen(email: email),
+            );
+          },
+        );
+      case AppRoutes.resetPassword:
+        return MaterialPageRoute(
+          builder: (context) {
+            final args = settings.arguments as List<String>;
+            return BlocProvider<AuthCubit>(
+              create: (context) => AuthCubit(webServices: webServices),
+              child: ResetPasswordScreen(
+                arguments: args,
+              ),
+            );
+          },
+        );
       case AppRoutes.notification:
         return MaterialPageRoute(
           builder: (context) {
-            return NotificationScreen();
+            return const NotificationScreen();
           },
         );
-      // case AppRoutes.blogs:
-      //   return MaterialPageRoute(
-      //     builder: (context) {
-      //       return BlogsScreen();
-      //     },
-      //   );
       case AppRoutes.blog:
         return MaterialPageRoute(
           builder: (context) {
@@ -137,5 +157,14 @@ class AppRouter {
           },
         );
     }
+    return MaterialPageRoute(
+      builder: (context) {
+        return const Scaffold(
+          body: Center(
+            child: Text('Nothing here'),
+          ),
+        );
+      },
+    );
   }
 }
