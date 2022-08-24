@@ -43,8 +43,7 @@ class CasheHelper {
   static List<String> getList({
     required String key,
   }) {
-    return sharedPreferences!.getStringList(key) ??
-        ['axe', 'rose', 'flower']; // List<String>.empty()
+    return sharedPreferences!.getStringList(key) ?? List<String>.empty(); //
   }
 
   static Future<bool> setList(
