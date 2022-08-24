@@ -43,7 +43,8 @@ class CasheHelper {
   static List<String> getList({
     required String key,
   }) {
-    return sharedPreferences!.getStringList(key) ?? List<String>.empty(); //
+    return sharedPreferences!.getStringList(key) ??
+        ['search history']; // List<String>.empty()
   }
 
   static Future<bool> setList(

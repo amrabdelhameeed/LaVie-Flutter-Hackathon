@@ -28,10 +28,57 @@ class HomeLayout extends StatelessWidget {
               ),
             ),
           ),
-          Center(
-            child: new Text(
-              'Yay!',
-            ),
+          BlocBuilder<HomeNavBarCubit, HomeNavBarState>(
+            builder: (context, state) {
+              var cubit = HomeNavBarCubit.get(context);
+
+              return Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    cubit.changeIndex(2);
+                  },
+                  child: Image.asset(AppImages.homeIcon),
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                bottomNavigationBar: BottomAppBar(
+                  notchMargin: 10,
+                  shape: const CircularNotchedRectangle(),
+                  child: Container(
+                    height: 60,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              cubit.changeIndex(0);
+                            },
+                            child: Image.asset(AppImages.leave)),
+                        InkWell(
+                            onTap: () {
+                              cubit.changeIndex(1);
+                            },
+                            child: Image.asset(AppImages.qrCode)),
+                        const SizedBox.shrink(), // space for FAB button
+                        InkWell(
+                            onTap: () {
+                              cubit.changeIndex(3);
+                            },
+                            child: Image.asset(AppImages.notification)),
+                        InkWell(
+                            onTap: () {
+                              cubit.changeIndex(4);
+                            },
+                            child: Image.asset(AppImages.profile))
+                      ],
+                    ),
+                  ),
+                ),
+                body: cubit.navBarScreens[cubit.currentIndex],
+              );
+            },
           ),
         ],
       );

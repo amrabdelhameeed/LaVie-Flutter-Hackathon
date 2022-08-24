@@ -28,62 +28,65 @@ class CreatePostScreen extends StatelessWidget {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 6.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _space(4),
-                Center(
-                  child: Container(
-                    height: 28.w,
-                    width: 28.w,
-                    padding: EdgeInsets.symmetric(vertical: 2.h),
-                    decoration: BoxDecoration(
-                        borderRadius: AppStyles.borderRadiusMideum,
-                        border: Border.all(width: 1, color: Colors.green)),
-                    child: cubit.postImage == null
-                        ? GestureDetector(
-                            onTap: () async {
-                              await cubit.pickBookImage();
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
-                                Icon(
-                                  Icons.add,
-                                  size: 28,
-                                  color: Colors.green,
-                                ),
-                                Text(
-                                  'Add Photo',
-                                  style: TextStyle(color: Colors.green),
-                                )
-                              ],
-                            ),
-                          )
-                        : Image.file(File(cubit.postImage!.path)),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _space(4),
+                  Center(
+                    child: Container(
+                      height: 28.w,
+                      width: 28.w,
+                      padding: EdgeInsets.symmetric(vertical: 2.h),
+                      decoration: BoxDecoration(
+                          borderRadius: AppStyles.borderRadiusMideum,
+                          border: Border.all(width: 1, color: Colors.green)),
+                      child: cubit.postImage == null
+                          ? GestureDetector(
+                              onTap: () async {
+                                await cubit.pickBookImage();
+                              },
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.add,
+                                    size: 28,
+                                    color: Colors.green,
+                                  ),
+                                  Text(
+                                    'Add Photo',
+                                    style: TextStyle(color: Colors.green),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Image.file(File(cubit.postImage!.path)),
+                    ),
                   ),
-                ),
-                _titleWithTextField(
-                    textEditingController: titleCont, title: 'Title'),
-                _space(4),
-                _titleWithTextField(
-                    textEditingController: descriptionCont,
-                    title: 'Description',
-                    minLines: 8),
-                _space(3),
-                CustomElevatedButton(
-                  text: 'Post',
-                  onTap: () {
-                    cubit.uploadPost(
-                        image64: cubit.base64Image!,
-                        title: titleCont.text,
-                        description: descriptionCont.text);
-                  },
-                )
-              ],
+                  _titleWithTextField(
+                      textEditingController: titleCont, title: 'Title'),
+                  _space(4),
+                  _titleWithTextField(
+                      textEditingController: descriptionCont,
+                      title: 'Description',
+                      minLines: 8),
+                  _space(3),
+                  CustomElevatedButton(
+                    text: 'Post',
+                    onTap: () {
+                      cubit.uploadPost(
+                          image64: cubit.base64Image!,
+                          title: titleCont.text,
+                          description: descriptionCont.text);
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         );

@@ -140,6 +140,12 @@ class SearchScreen extends StatelessWidget {
         CasheHelper.setList(
             value: AppStrings.searchList!, key: AppStrings.searchListKey);
       },
+      onSaved: (newValue) {
+        AppStrings.searchList!.add(newValue!);
+
+        CasheHelper.setList(
+            value: AppStrings.searchList!, key: AppStrings.searchListKey);
+      },
       onTap: () {
         cubit.toggleSearch(true);
       },
